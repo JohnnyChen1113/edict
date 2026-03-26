@@ -143,6 +143,17 @@ class DispatchWorker:
 
             except Exception as e:
                 log.error(f"❌ Dispatch failed: task {task_id} → {agent}: {e}", exc_info=True)
+                await self.bus.publish(
+                    topic=TOPIC_TASK_STATUS,
+                    trace_id=trace_id,
+                    event_type="task.dispatch.failed",
+                    producer="dispatcher",
+                    payload={
+                        "task_id": task_id,
+                        "agent": agent,
+                        "error": str(e),
+                    },
+                )
                 # 不 ACK → Redis 会重新投递给其他消费者
 
     def _load_soul(self, agent: str) -> str:
@@ -255,7 +266,7 @@ class DispatchWorker:
                     "stderr": f"claude command not found at '{settings.claude_bin}'",
                 }
 
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, _run)
 
 

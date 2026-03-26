@@ -328,7 +328,7 @@ def main():
             if updated < one_day_ago:
                 continue
             state = t.get('state')
-            if state in ('Doing', 'Review', 'Blocked'):
+            if state in ('Doing', 'Review', 'Blocked', 'Next'):
                 filtered.append(t)
         tasks = filtered
 
