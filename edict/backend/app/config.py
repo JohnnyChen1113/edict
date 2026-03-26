@@ -26,10 +26,16 @@ class Settings(BaseSettings):
     secret_key: str = "change-me-in-production"
     debug: bool = False
 
-    # ── OpenClaw ──
+    # ── OpenClaw (legacy, kept for reference) ──
     openclaw_gateway_url: str = "http://localhost:18789"
     openclaw_bin: str = "openclaw"
     openclaw_project_dir: str | None = None
+
+    # ── Claude Code ──
+    claude_bin: str = "claude"
+    claude_project_dir: str | None = None
+    claude_max_turns: int = 10
+    claude_allowed_tools: str = ""  # e.g. "Bash,Read,Write,Edit,Glob,Grep"
 
     # ── Legacy 兼容 ──
     legacy_data_dir: str = "../data"
